@@ -1,6 +1,3 @@
-
-/* eslint indent: ["error", 2] */
-
 const request = require('request');
 const debug = require('debug')('cloudtuya');
 // A module that uses the tuya cloud api, to get and set device states
@@ -29,8 +26,6 @@ const debug = require('debug')('cloudtuya');
 * @param {String} [options.bizType='smart_life'] App business ('tuya' or 'smart_life')
 * @param {String} [options.countryCode='44'] Country code (International dialing number)
 * */
-
-// eslint-disable-next-line no-unused-vars
 class CloudTuya {
   constructor(options) {
     // super();
@@ -137,6 +132,7 @@ class CloudTuya {
   updateStatesCache(key, value, states) {
     this.states = (this.states) || {};
     this.states[key] = value;
+    // eslint-disable-next-line no-param-reassign
     states[key] = value;
     return states;
   }
@@ -148,7 +144,8 @@ class CloudTuya {
     devices = (config.id) ? devices.filter(device => device.id === config.id) : devices;
     debug(`postfilter ${JSON.stringify(devices)}`);
     const states = {};
-    const returnMap = await devices.map(device => this.updateStatesCache(device.id, CloudTuya.smap(device.data.state), states));
+    const returnMap = await devices.map(device => this
+      .updateStatesCache(device.id, CloudTuya.smap(device.data.state), states));
     debug(`Return map ${JSON.stringify(returnMap)}`);
     debug(states);
     return (states[config.id]) || states;

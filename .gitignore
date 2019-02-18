@@ -1,9 +1,9 @@
-# API keys
+# Login email and pass . API
+.credentials.json
 keys.json
 
-# Login email and pass
-.credentials.json
-
+#Devices - Details of devices
+devices.json
 # Development test file
 dev.js
 

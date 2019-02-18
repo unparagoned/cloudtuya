@@ -1,0 +1,39 @@
+{
+  "name": "cloudtuya",
+  "version": "1.0.0",
+  "description": "Control Tuya devices over the cloud",
+  "main": "cloudtuya.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unparagoned/cloudtuya.git"
+  },
+  "keywords": [
+    "tuya",
+    "tuyapi",
+    "njstuya",
+    "jinvoo",
+    "smart",
+    "life",
+    "smarthome",
+    "light",
+    "sockets"
+  ],
+  "author": "Unparagoned",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/unparagoned/cloudtuya/issues"
+  },
+  "homepage": "https://github.com/unparagoned/cloudtuya#readme",
+  "dependencies": {
+    "debug": "^4.1.1",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.14.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0"
+  }
+}
