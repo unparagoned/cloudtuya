@@ -12,6 +12,7 @@ const debug = require('debug')('cloudtuya');
  *
  */
 
+
 /**
 * A TuyaCloud object
 * @class
