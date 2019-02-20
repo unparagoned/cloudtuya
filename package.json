@@ -1,8 +1,8 @@
 {
   "name": "cloudtuya",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Control Tuya devices over the cloud",
-  "main": "cloudtuya.js",
+  "main": "cloudtuya",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "eslint": "^5.14.0",
+    "eslint-config-airbnb": "^17.1.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0"
   }
