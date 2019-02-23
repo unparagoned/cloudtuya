@@ -36,6 +36,7 @@ class CloudTuya {
         from: 'tuya',
       };
     }
+    this.tokenValidTo = 0;
 
     // Specific endpoint where no key/secret required
     config.region = (config.region && (config.region.toLowerCase() in ['cn', 'eu', 'us']))
@@ -55,10 +56,15 @@ class CloudTuya {
    */
   async post(options) {
     // get token if missing or expired
-    if(this.tokens && this.tokens.expires_in < 0) this.getToken();
+    // Only run if uri not auth.do
+    if(!options.uri.includes('auth.do')) {
+      if(!this.tokens) await this.getToken();
+      if((this.tokenValidTo - (new Date()).getTime()) < 360) await this.refreshToken();
+    }
     // Set to empty object if undefined
     const config = (options) || {};
     config.method = 'POST';
+    debug(`REQUEST POST: ${JSON.stringify(config)}`);
     return new Promise((resolve, reject) => {
       request(config, (err, response, body) => {
         if(!err && response.statusCode === 200) {
@@ -106,6 +112,7 @@ class CloudTuya {
       if(matchDevice) this.currentDevices = matchDevice;
     }
 
+
     return this.currentDevices;
   }
 
@@ -151,6 +158,7 @@ class CloudTuya {
     });
     debug(`Return map ${JSON.stringify(returnMap)}`);
     debug(`States: ${states}`);
+
     return states;
   }
 
@@ -209,7 +217,31 @@ class CloudTuya {
     const tokens = await this.post(postConfig);
     this.tokens = JSON.parse(tokens);
     this.accessToken = this.tokens.access_token;
-    debug(this.tokens);
+    this.tokenValidTo = (new Date()).getTime() + this.tokens.expires_in;
+    debug(`Token ${this.tokens} expire at ${this.tokenValidTo}`);
+    return this.tokens;
+  }
+
+  /**
+   * Refreshes token - untested
+   */
+  refreshToken() {
+    const uri = `${this.uri}/auth.do`;
+    const headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+    const postConfig = {
+      uri,
+      method: 'POST',
+      headers,
+      form: {
+        grant_type: 'refresh_token',
+        refresh_token: this.tokens.refresh_token,
+      },
+    };
+
+    const tokens = this.post(postConfig);
+    debug(`refresh tokens ${JSON.stringify(tokens)}`);
     return this.tokens;
   }
 
@@ -217,7 +249,9 @@ class CloudTuya {
    *  login alias
    */
   async getToken() {
-    return this.login();
+    if(!this.tokens) return this.login();
+    this.refreshToken();
+    return this.tokens;
   }
 }
 

@@ -3,11 +3,11 @@
  */
 
 
-const debug = require('debug')('cloudtuya');
+const debug = require('debug')('cloudtuya-example');
 const fs = require('fs');
 const CloudTuya = require('./cloudtuya');
 
-const name = 'cloudtuya';
+const name = 'cloudtuya example';
 
 debug('booting %s', name);
 
@@ -56,7 +56,7 @@ async function main() {
   debug(`device data ${deviceData} and ${deviceData[0].id} id or all ${deviceData[1].name}`);
 
   // Connect to cloud api and get access token.
-  const tokens = await api.login();
+  let tokens = await api.login();
   print(`Token ${JSON.stringify(tokens)}`);
 
   // Get all devices registered on the Tuya app
@@ -75,5 +75,6 @@ async function main() {
   // Turn device with testId off.
   devices = await api.setState(testId, 'Off');
   print(`state ${JSON.stringify(devices)}`);
+  tokens = await api.refreshToken();
 }
 main();
