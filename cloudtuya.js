@@ -158,7 +158,8 @@ class CloudTuya {
    * Sets device with id to state
    * @param {String} id Device id to set
    * @param {Number/String} state State to apply
-   * @param {String} [cmd='turnOnOff'] Command type
+   * @param {String} [cmd='turnOnOff'] Command type: modeSet, temperatureSet, turnOnOff, startStop,
+   * windSpeedSet, swingOpen, swingClose, brightnessSet, colorSet, colorTemperatureSet.
    */
   async setState(id, state, cmd) {
     const uri = `${this.uri}/skill`;
