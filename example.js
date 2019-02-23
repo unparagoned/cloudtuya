@@ -10,6 +10,11 @@ const CloudTuya = require('./cloudtuya');
 const name = 'cloudtuya';
 
 debug('booting %s', name);
+
+function print(msg) {
+  // eslint-disable-next-line no-console
+  console.log(msg);
+}
 // Load local files
 let apiKeys = {};
 let deviceData = {};
@@ -52,28 +57,23 @@ async function main() {
 
   // Connect to cloud api and get access token.
   const tokens = await api.login();
-  debug(`Token ${JSON.stringify(tokens)}`);
+  print(`Token ${JSON.stringify(tokens)}`);
 
   // Get all devices registered on the Tuya app
   let devices = await api.find();
-  debug(`devices ${JSON.stringify(devices)}`);
+  print(`devices ${JSON.stringify(devices)}`);
 
   // Save device to device.json
   saveDataToFile(devices);
 
   // Get state of a single device
-  const deviceStates = await api.state({
-    devId: testId,
-  });
+  const deviceStates = await api.state(testId);
   const state = deviceStates.testId;
   debug(`testId ${testId}  has value ${state}`);
-  debug(`devices ${JSON.stringify(deviceStates)}`);
+  print(`Status ${JSON.stringify(deviceStates)}`);
 
   // Turn device with testId off.
-  devices = await api.setState({
-    devId: testId,
-    setState: 'Off',
-  });
-  debug(`devices ${JSON.stringify(devices)}`);
+  devices = await api.setState(testId, 'Off');
+  print(`state ${JSON.stringify(devices)}`);
 }
 main();

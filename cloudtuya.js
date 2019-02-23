@@ -1,26 +1,20 @@
+/**
+ * CloudTuya
+ * A module that uses the tuya cloud api, to get and set device states
+ * It usues your tuya/smartlife email and pass
+ */
 const request = require('request');
 const debug = require('debug')('cloudtuya');
-// A module that uses the tuya cloud api, to get and set device states
-// All you need is to put your tuya/smartlife email and pass
-// Into the keys.json file
-/**
-* "userName" : "d@yahoo.com",
-*  "password": "yourpassword",
-*  "countryCode": "44",
-*  "bizType": "smart_life",
-*  "region": "EU"
- *
- */
 
+// DEBUG=* node cloudtuya to enable debug logs
+const name = 'cloudtuya';
+debug('booting %s', name);
 /**
-* A TuyaCloud object
+* A CloudTuya object
 * @class
 * @param {Object} options construction options
-* @param {String} options.key API key
-* @param {String} options.secret API secret
-* @param {String} [options.region='eu'] region az=Americas, ay=Asia, eu=Europe)
+* @param {String} [options.region='eu'] region us=Americas, cn=Asia, eu=Europe)
 * @param {String} [options.deviceID] ID of device calling API (defaults to a random value)
-* @param {String} [options.mode='ANY'] Authorisation method (ANY, KEY, EMAIL)
 * @param {String} options.userName App email to login to App on phone
 * @param {String} options.password App password
 * @param {String} [options.bizType='smart_life'] App business ('tuya' or 'smart_life')
@@ -28,7 +22,6 @@ const debug = require('debug')('cloudtuya');
 * */
 class CloudTuya {
   constructor(options) {
-    // super();
     // Set to empty object if undefined
     const config = (options) || {};
     this.devices = [];
@@ -44,21 +37,26 @@ class CloudTuya {
       };
     }
 
-
     // Specific endpoint where no key/secret required
-    config.region = (config.region && (config.region.toLowerCase() in ['az', 'eu', 'ay']))
+    config.region = (config.region && (config.region.toLowerCase() in ['cn', 'eu', 'us']))
       ? config.region
       : 'eu';
     this.uri = 'https://px1.tuyaeu.com/homeassistant'.replace('eu', config.region);
   }
 
   /**
-   *
-   * @param {Object} options requst options
+   * POSTS request with options arg
+   * @param {Object} options request options
+   * @param {String} options.uri uri/url
+   * @param {String} [options.method='POST'] Request type
+   * @param {Object} options.headers Request headers
+   * @param {Object} options.json JSON request data OR
+   * @param {Object} options.form Form request data
    */
   async post(options) {
-    // Set to empty object if undefined
+    // get token if missing or expired
     if(this.tokens && this.tokens.expires_in < 0) this.getToken();
+    // Set to empty object if undefined
     const config = (options) || {};
     config.method = 'POST';
     return new Promise((resolve, reject) => {
@@ -72,11 +70,11 @@ class CloudTuya {
   }
 
   /**
-   * @param {Object} opbtions
+   * Find devices
+   * @param {String} id Get id or find all if missing
    */
-  async find(options) {
-    const config = (options) || {};
-    // Scan network otherwise or no device id in options
+  async find(id) {
+    // Set options to find devices
     const uri = `${this.uri}/skill`;
     const data = {
       header: {
@@ -97,25 +95,32 @@ class CloudTuya {
       headers,
       json: data,
     };
+    // Get devices from request
     const{ payload: { devices } } = await this.post(postConfig);
     this.devices = devices;
     this.currentDevices = devices;
     debug(devices);
     // Check if device is in device list first
-    if(config.id) {
-      const matchDevice = await this.devices.filter(device => device.id === config.id);
+    if(id) {
+      const matchDevice = await this.devices.filter(device => device.id === id);
       if(matchDevice) this.currentDevices = matchDevice;
     }
 
     return this.currentDevices;
   }
 
-  // Converts true/false to ON/OFF
+  /**
+   * Converts true/false to ON/OFF
+   * @param {boolean} itemState
+   */
   static smap(itemState) {
     return(itemState && 'ON') || 'OFF';
   }
 
-  // Convert text on/off, logic and numbers into 1/0 values
+  /**
+   * Convert text on/off, logic and numbers into 1/0 values
+   * @param {String/Boolean/Number} itemState
+   */
   static lmap(itemState) {
     if((typeof itemState === 'number')
       && (itemState === 0
@@ -133,42 +138,39 @@ class CloudTuya {
     return itemState;
   }
 
-  updateStatesCache(key, value, states) {
-    this.states = (this.states) || {};
-    this.states[key] = value;
-    // eslint-disable-next-line no-param-reassign
-    states[key] = value;
+  /**
+   * Gets state of item/s
+   * @param {String} id
+   */
+  async state(id) {
+    const devices = await this.find(id);
+    const states = {};
+    const returnMap = await devices.map((device) => {
+      states[device.id] = CloudTuya.smap(device.data.state);
+      return states;
+    });
+    debug(`Return map ${JSON.stringify(returnMap)}`);
+    debug(`States: ${states}`);
     return states;
   }
 
-  async state(options) {
-    let devices = await this.find(options);
-    const config = (options) || {};
-    debug(`prefilter ${JSON.stringify(devices)}`);
-    devices = (config.id) ? devices.filter(device => device.id === config.id) : devices;
-    debug(`postfilter ${JSON.stringify(devices)}`);
-    const states = {};
-    const returnMap = await devices.map(device => this
-      .updateStatesCache(device.id, CloudTuya.smap(device.data.state), states));
-    debug(`Return map ${JSON.stringify(returnMap)}`);
-    debug(states);
-    return(states[config.id]) || states;
-  }
-
-  async setState(options) {
-    const config = (options) || {};
-    const payload = (config.payload) || {};
-    // Scan network otherwise or no device id in options
+  /**
+   * Sets device with id to state
+   * @param {String} id Device id to set
+   * @param {Number/String} state State to apply
+   * @param {String} [cmd='turnOnOff'] Command type
+   */
+  async setState(id, state, cmd) {
     const uri = `${this.uri}/skill`;
-    payload.accessToken = this.accessToken;
-    payload.devId = config.devId;
-    // dsp 1 default
-    payload.value = CloudTuya.lmap(config.setState);
-    const command = config.command || 'turnOnOff';
+    const payload = {
+      accessToken: this.accessToken,
+      devId: id,
+      value: CloudTuya.lmap(state),
+    };
     debug(payload);
     const data = {
       header: {
-        name: command,
+        name: cmd || 'turnOnOff',
         namespace: 'control',
         payloadVersion: 1,
       },
@@ -185,34 +187,36 @@ class CloudTuya {
     };
     debug(postConfig);
     const setProgress = await this.post(postConfig);
-    return setProgress;
+
+    return(setProgress.header.code === 'SUCCESS');
   }
 
-  async login(options) {
-    const config = options || {};
+  /**
+   * login using tuya app email/pass to obtain token to get/set device data
+   */
+  async login() {
     const uri = `${this.uri}/auth.do`;
     const headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
     };
-    // Set userName pass biz
-    const data = config.core || this.core;
-    data.from = 'tuya';
     const postConfig = {
       uri,
       method: 'POST',
       headers,
-      form: data,
+      form: this.core,
     };
-    let tokens = await this.post(postConfig);
-    tokens = JSON.parse(tokens);
-    this.tokens = tokens;
-    this.accessToken = tokens.access_token;
-    debug(tokens);
-    return tokens;
+    const tokens = await this.post(postConfig);
+    this.tokens = JSON.parse(tokens);
+    this.accessToken = this.tokens.access_token;
+    debug(this.tokens);
+    return this.tokens;
   }
 
-  async getToken(options) {
-    return this.login(options);
+  /**
+   *  login alias
+   */
+  async getToken() {
+    return this.login();
   }
 }
 
