@@ -47,10 +47,11 @@ class CloudTuya {
 
 
     // Specific endpoint where no key/secret required
-    config.region = (config.region && (config.region.toLowerCase() in ['az', 'eu', 'ay']))
-      ? config.region
+    const knownRegions = ['az', 'eu', 'ay', 'us'];
+    config.region = (config.region && knownRegions.indexOf(config.region.toLowerCase()) !== -1)
+      ? config.region.toLowerCase()
       : 'eu';
-    this.uri = 'https://px1.tuyaeu.com/homeassistant'.replace('eu', config.region);
+    this.uri = 'https://px1.tuya' + config.region + '.com/homeassistant';
   }
 
   /**
