@@ -40,4 +40,4 @@ The following values are available
 
 - **bizType**: *tuya, smart_life*
 - **countryCode**: Enter the [country calling code](https://en.wikipedia.org/wiki/List_of_country_calling_codes) from your country, e.g. 44
-- **region**: *az*(Americas), *ay*(Asia), *eu*(Europe)
+- **region**: *az* (Americas), *ay* (Asia), *eu* (Europe), *us* (United States)
