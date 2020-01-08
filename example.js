@@ -52,7 +52,7 @@ async function main() {
   });
 
   // Test device read from devics.json saved at the end.
-  const testId = deviceData[0].id || '10000000000';
+  var testId = deviceData[0].id || '10000000000';
   debug(`device data ${deviceData} and ${deviceData[0].id} id or all ${deviceData[0].name}`);
 
   // Connect to cloud api and get access token.
@@ -65,6 +65,9 @@ async function main() {
 
   // Save device to device.json
   saveDataToFile(devices);
+
+  // Setting new Device ID
+  testId = devices[0].id
 
   // Get state of a single device
   const deviceStates = await api.state({
