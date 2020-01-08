@@ -2,7 +2,6 @@
  * Example script using cloudtuya to connect, get states an change them
  */
 
-
 const debug = require('debug')('cloudtuya');
 const fs = require('fs');
 const CloudTuya = require('./cloudtuya');
@@ -78,15 +77,16 @@ async function main() {
   debug(`testId ${testId}  has value ${state}`);
   debug(`devices ${JSON.stringify(deviceStates)}`);
 
-  // Turn device with testId off.
-  devices = await api.setState({
-    devId: testId,
-    setState: 'Off',
-  });
+  // Turn device  off.
+  // devices = await api.setState({
+  //   devId: testId,
+  //   setState: 'Off',
+  // });
 
-  // Example how to use the Device Classes like Light
+  // Example how to turn on a lamp and set brightness
   var myLight =  new Light({ api: api, deviceId: testId});
-  myLight.turnOff();
+  myLight.turnOn();
+  myLight.setBrightness(80);
 
   debug(`devices ${JSON.stringify(devices)}`);
 }

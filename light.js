@@ -1,26 +1,11 @@
-class Light {
-  constructor(options) {
-    if(!options.api){
-      throw new Error("Please pass the Tuya API");
-    }
-    this._api = options.api;
+const BaseDevice = require('./baseDevice');
 
-    if(!options.deviceId){
-      throw new Error("Please pass the Tuya API");
-    }
-    this._deviceId = options.deviceId;
-  }
-
-  async turnOn() {
+class Light extends BaseDevice {
+  async setBrightness(value) {
     return await this._api.setState({
       devId: this._deviceId,
-      setState: 'On',
-    });
-  }
-  async turnOff() {
-    return await this._api.setState({
-      devId: this._deviceId,
-      setState: 'Off',
+      command: 'brightnessSet',
+      setState: value,
     });
   }
 }
