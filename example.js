@@ -53,7 +53,7 @@ async function main() {
 
   // Test device read from devics.json saved at the end.
   const testId = deviceData[0].id || '10000000000';
-  debug(`device data ${deviceData} and ${deviceData[0].id} id or all ${deviceData[1].name}`);
+  debug(`device data ${deviceData} and ${deviceData[0].id} id or all ${deviceData[0].name}`);
 
   // Connect to cloud api and get access token.
   const tokens = await api.login();
