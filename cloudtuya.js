@@ -128,7 +128,7 @@ class CloudTuya {
     }
     if(typeof itemState === 'string') {
       return(['on', 'true', '1']
-        .includes(itemState.toLowerCase)
+        .includes(itemState.toLowerCase())
         && 1) || 0;
     }
     return itemState;
