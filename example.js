@@ -14,10 +14,15 @@ debug('booting %s', name);
 let apiKeys = {};
 let deviceData = {};
 try{
-  apiKeys = require('./keys.json') || {};
-  deviceData = require('./devices.json') || {};
+  apiKeys = require('./keys.json');
 } catch(err) {
-  debug('keys.json or devices.json are missing.');
+  console.error('keys.json is missing.');
+}
+try{
+  deviceData = require('./devices.json');
+} catch(err) {
+  console.warn('devices.json is missing. creating temporary');
+  deviceData = [{}];
 }
 /**
  * Save Data Such a Devices to file
