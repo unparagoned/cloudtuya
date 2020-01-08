@@ -7,13 +7,13 @@ This Node.js API allows you to control your Tuya / Smart Life Devices by just pa
 ## Get Started
 
 - Install [Node.js](http://nodejs.org/)
-- Clone Repository
-- `cd` to Repository folder
+- Clone repository
+- `cd` to repository folder
 - Run `npm i`
 - Create a `keys.json` file (see example below)
 - Run `node example.js`
 
-This will turn off the first device you've set up in Tuya / Smart Life. Also a `devices.json` file will get created with a list of all your devices and it's state.
+This example will turn off the first device you've set up in Tuya / Smart Life. Also a `devices.json` file will get created with a list of all your devices and it's current state.
 
 
 ## Example Files
@@ -37,5 +37,5 @@ Take a look at the `example.js` file, to see how to call the cloudtuya API.
 The following values are available
 
 - **bizType**: *tuya, smart_life*
-- **countryCode**: Enter the [ountry calling code](https://en.wikipedia.org/wiki/List_of_country_calling_codes) from your country, e.g. 44
+- **countryCode**: Enter the [country calling code](https://en.wikipedia.org/wiki/List_of_country_calling_codes) from your country, e.g. 44
 - **region**: *az*(Americas), *ay*(Asia), *eu*(Europe)
