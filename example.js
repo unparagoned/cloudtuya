@@ -5,7 +5,7 @@
 const debug = require('debug')('cloudtuya');
 const fs = require('fs');
 const CloudTuya = require('./cloudtuya');
-const Light = require('./light');
+const Light = require('./devices/light');
 
 const name = 'cloudtuya';
 
