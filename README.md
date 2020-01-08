@@ -1,7 +1,9 @@
 # cloudtuya
 Tuya control over the cloud
 
-This Node.js API allows you to control your Tuya / Smart Life Devices by just passing your email and password, that you are using in the Tuya/Smart Life app.
+This Node.js API allows you to control your Tuya / Smart Life Devices by just passing your email and password, that you are using in the Tuya/Smart Life app. This library is using an Tuya API endpoint, that was specially designed for Home Assistant.
+
+A good reference of the capibilities is the [tuyaha project](https://github.com/PaulAnnekov/tuyaha), which actually is a library, written in python.
 
 
 ## Get Started
