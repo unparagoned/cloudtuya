@@ -6,6 +6,7 @@
 const debug = require('debug')('cloudtuya');
 const fs = require('fs');
 const CloudTuya = require('./cloudtuya');
+const Light = require('./light');
 
 const name = 'cloudtuya';
 
@@ -82,6 +83,11 @@ async function main() {
     devId: testId,
     setState: 'Off',
   });
+
+  // Example how to use the Device Classes like Light
+  var myLight =  new Light({ api: api, deviceId: testId});
+  myLight.turnOff();
+
   debug(`devices ${JSON.stringify(devices)}`);
 }
 main();
