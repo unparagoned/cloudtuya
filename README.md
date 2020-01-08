@@ -29,7 +29,13 @@ Take a look at the `example.js` file, to see how to call the cloudtuya API.
 "userName": "YOURSMARTLIFEEMAIL",
 "password": "YOURSMARTLIFEPASSWORD",
 "bizType": "smart_life",
-"countryCode": "de",
+"countryCode": "44",
 "region": "eu"
 }
 ```
+
+The following values are available
+
+- **bizType**: *tuya, smart_life*
+- **countryCode**: Enter the [ountry calling code](https://en.wikipedia.org/wiki/List_of_country_calling_codes) from your country, e.g. 44
+- **region**: *az*(Americas), *ay*(Asia), *eu*(Europe)
