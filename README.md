@@ -1,48 +1,43 @@
 # cloudtuya
 Tuya control over the cloud
-Just using your email and pass used on the Tuya/Smart Life app.
+
+This Node.js API allows you to control your Tuya / Smart Life Devices by just passing your email and password, that you are using in the Tuya/Smart Life app. This library is using an Tuya API endpoint, that was specially designed for Home Assistant.
+
+A good reference of the capibilities is the [tuyaha project](https://github.com/PaulAnnekov/tuyaha), which actually is a library, written in python.
 
 
-###
+## Get Started
 
-#### Example Script showing how to use cloudtuya
+- Install [Node.js](http://nodejs.org/)
+- Clone repository
+- `cd` to repository folder
+- Run `npm i`
+- Create a `keys.json` file (see example below)
+- Run `node example.js`
+
+This example will turn off the first device you've set up in Tuya / Smart Life. Also a `devices.json` file will get created with a list of all your devices and it's current state.
+
+
+## Example Files
+
+### Example Script showing how to use cloudtuya
+
+Take a look at the `example.js` file, to see how to call the cloudtuya API.
+
+### Example `keys.json`
 
 ```
-async function main() {
-  // Load from keys.json
-  const api = new CloudTuya({
-    userName: apiKeys.userName,
-    password: apiKeys.password,
-    bizType: apiKeys.bizType,
-    countryCode: apiKeys.countryCode,
-    region: apiKeys.region,
-  });
+{
+"userName": "YOURSMARTLIFEEMAIL",
+"password": "YOURSMARTLIFEPASSWORD",
+"bizType": "smart_life",
+"countryCode": "44",
+"region": "eu"
+}
+```
 
-  // Test device read from devics.json saved at the end.
-  testId = deviceData[0].id || "10000000000";
-  debug(`device data ${deviceData} and ${deviceData[0].id} id or all ${deviceData[1].name}`);
-  
-  // Connect to cloud api and get access token.
-  const tokens = await api.login();
-  debug(`Token ${JSON.stringify(tokens)}`);
-  
-  // Get all devices registered on the Tuya app
-  let devices = await api.find();
-  debug(`devices ${JSON.stringify(devices)}`);
+The following values are available
 
-  // Save device to device.json
-  saveDataToFile(devices);
-
-  // Get state of a single device
-  let deviceStates = await api.state({ devId: testId });
-  const state = deviceStates['testId'];
-  debug(`testId ${testId}  has value ${state}`);
-  debug(`devices ${JSON.stringify(deviceStates)}`);
-  
-  // Turn device with testId off.
-  devices = await api.setState({
-    devId: testId,
-    setState: 'Off',
-  });
-  debug(`devices ${JSON.stringify(devices)}`);
-  ```
+- **bizType**: *tuya, smart_life*
+- **countryCode**: Enter the [country calling code](https://en.wikipedia.org/wiki/List_of_country_calling_codes) from your country, e.g. 44
+- **region**: *az* (Americas), *ay* (Asia), *eu* (Europe), *us* (United States)
