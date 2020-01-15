@@ -12,5 +12,11 @@ class Light extends BaseDevice {
   async supportsBrightness(){
     return await this.supportsFeature('brightness');
   }
+  async supportsColor(){
+    return await this.supportsFeature('color');
+  }
+  async supportsColorTemperatur(){
+    return await this.supportsFeature('color_temp');
+  }
 }
 module.exports = Light;
