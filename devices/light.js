@@ -8,5 +8,9 @@ class Light extends BaseDevice {
       setState: value,
     });
   }
+
+  async supportsBrightness(){
+    return await this.supportsFeature('brightness');
+  }
 }
 module.exports = Light;

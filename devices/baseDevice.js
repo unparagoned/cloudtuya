@@ -23,5 +23,17 @@ class BaseDevice {
       setState: 'Off',
     });
   }
+
+  async getSkills() {
+    var state = await this._api.find({
+      devId: this._deviceId
+    });
+    return state && state[0] && state[0].data;
+  }
+
+  async supportsFeature(feature){
+    var skills = await this.getSkills();
+    return !!skills[feature];
+  }
 }
 module.exports = BaseDevice;
