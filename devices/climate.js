@@ -22,5 +22,15 @@ class Climate extends BaseDevice {
       setState: value,
     });
   }
+
+  async supportsMode(){
+    return await this.supportsFeature('mode');
+  }
+  async supportsMode(){
+    return await this.supportsFeature('windspeed');
+  }
+  async supportsMode(){
+    return await this.supportsFeature('humidity');
+  }
 }
 module.exports = Climate;
