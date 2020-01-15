@@ -8,6 +8,10 @@ class Fan extends BaseDevice {
       setState: value,
     });
   }
+  async supportsOcillate(){
+    return await this.supportsFeature('direction');
+  }
+
 
 }
 module.exports = Fan;
