@@ -24,6 +24,10 @@ class BaseDevice {
     });
   }
 
+  async isOn(){
+    return JSON.parse((await this.getSkills())['state']);
+  }
+
   async getSkills() {
     var state = await this._api.find({
       devId: this._deviceId
