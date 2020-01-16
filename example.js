@@ -1,6 +1,6 @@
 /**
- * Example script using cloudtuya to connect, get states an change them
- */
+* Example script using cloudtuya to connect, get states an change them
+*/
 
 const debug = require('debug')('cloudtuya');
 const fs = require('fs');
@@ -25,10 +25,10 @@ try{
   deviceData = [{}];
 }
 /**
- * Save Data Such a Devices to file
- * @param {Object} data to save
- * @param {String} [file="./devices.json"] to save to
- */
+* Save Data Such a Devices to file
+* @param {Object} data to save
+* @param {String} [file="./devices.json"] to save to
+*/
 function saveDataToFile(data, file = './devices.json') {
   debug(`Data ${JSON.stringify(data)}`);
   fs.writeFile(file, JSON.stringify(data), (err) => {
@@ -76,18 +76,20 @@ async function main() {
   const state = deviceStates.testId;
   debug(`testId ${testId}  has value ${state}`);
   debug(`devices ${JSON.stringify(deviceStates)}`);
+  debug(`devices ${JSON.stringify(devices)}`);
 
-  // Turn device  off.
-  // devices = await api.setState({
-  //   devId: testId,
-  //   setState: 'Off',
-  // });
 
   // Example how to turn on a lamp and set brightness
   var myLight =  new Light({ api: api, deviceId: testId});
+
   myLight.turnOn();
   myLight.setBrightness(80);
 
-  debug(`devices ${JSON.stringify(devices)}`);
+  var brightness =(JSON.stringify(await myLight.getBrightness()));
+  var isOn =(JSON.stringify(await myLight.isOn()));
+  
+  console.log(`lamp on: ${isOn}`);
+  console.log(`brightness is set to ${brightness}`);
+
 }
 main();
