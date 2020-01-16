@@ -17,6 +17,28 @@ A good reference of the capibilities is the [tuyaha project](https://github.com/
 
 This example will turn off the first device you've set up in Tuya / Smart Life. Also a `devices.json` file will get created with a list of all your devices and it's current state.
 
+### How to call the API
+
+The following shows a basic script how you can turn on a lamp and set it's brightness
+
+```
+const api = new CloudTuya({
+  userName: apiKeys.userName,
+  password: apiKeys.password,
+  bizType: apiKeys.bizType,
+  countryCode: apiKeys.countryCode,
+  region: apiKeys.region,
+});
+await api.login();
+
+deviceId = devices[0].id;
+
+var myLight =  new Light({ api: api, deviceId: deviceId});
+
+myLight.turnOn();
+myLight.setBrightness(80);
+var brightness = await myLight.getBrightness();
+```
 
 ## Example Files
 

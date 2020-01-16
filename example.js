@@ -67,7 +67,7 @@ async function main() {
   saveDataToFile(devices);
 
   // Setting new Device ID
-  testId = devices[0].id
+  testId = devices[0].id;
 
   // Get state of a single device
   const deviceStates = await api.state({
@@ -85,9 +85,9 @@ async function main() {
   myLight.turnOn();
   myLight.setBrightness(80);
 
-  var brightness =(JSON.stringify(await myLight.getBrightness()));
+  var brightness = await myLight.getBrightness();
   var isOn =(JSON.stringify(await myLight.isOn()));
-  
+
   console.log(`lamp on: ${isOn}`);
   console.log(`brightness is set to ${brightness}`);
 
