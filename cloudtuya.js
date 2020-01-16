@@ -204,11 +204,18 @@ class CloudTuya {
       headers,
       form: data,
     };
+
     let tokens = await this.post(postConfig);
     tokens = JSON.parse(tokens);
     this.tokens = tokens;
     this.accessToken = tokens.access_token;
     debug(tokens);
+
+    if(tokens && tokens.responseStatus && tokens.responseStatus === 'error'){
+      console.error(tokens.errorMsg);
+      return null;
+    }
+    
     return tokens;
   }
 
