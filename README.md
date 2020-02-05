@@ -21,7 +21,7 @@ This example will turn off the first device you've set up in Tuya / Smart Life. 
 
 The following shows a basic script how you can turn on a lamp and set it's brightness
 
-```
+```javascript
 const api = new CloudTuya({
   userName: apiKeys.userName,
   password: apiKeys.password,
@@ -48,7 +48,7 @@ Take a look at the `example.js` file, to see how to call the cloudtuya API.
 
 ### Example `keys.json`
 
-```
+```javascript
 {
 "userName": "YOURSMARTLIFEEMAIL",
 "password": "YOURSMARTLIFEPASSWORD",
