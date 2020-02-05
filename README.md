@@ -50,11 +50,11 @@ Take a look at the `example.js` file, to see how to call the cloudtuya API.
 
 ```javascript
 {
-"userName": "YOURSMARTLIFEEMAIL",
-"password": "YOURSMARTLIFEPASSWORD",
-"bizType": "smart_life",
-"countryCode": "44",
-"region": "eu"
+  "userName": "YOURSMARTLIFEEMAIL",
+  "password": "YOURSMARTLIFEPASSWORD",
+  "bizType": "smart_life",
+  "countryCode": "44",
+  "region": "eu"
 }
 ```
 
