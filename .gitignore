@@ -71,3 +71,6 @@ typings/
 
 # vscode
 .vscode
+key.json
+njstuya.js
+package-lock.json
