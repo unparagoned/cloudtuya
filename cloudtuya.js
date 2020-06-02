@@ -45,8 +45,8 @@ class CloudTuya {
       };
     }
 
-
     // Specific endpoint where no key/secret required
+
     const knownRegions = ['az', 'eu', 'ay', 'us'];
     config.region = (config.region && knownRegions.indexOf(config.region.toLowerCase()) !== -1)
       ? config.region.toLowerCase()
@@ -216,7 +216,7 @@ class CloudTuya {
       console.error(tokens.errorMsg);
       return null;
     }
-    
+
     return tokens;
   }
 
