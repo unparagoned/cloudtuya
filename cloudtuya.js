@@ -45,9 +45,8 @@ class CloudTuya {
       };
     }
 
-
     // Specific endpoint where no key/secret required
-    config.region = (config.region && (config.region.toLowerCase() in ['az', 'eu', 'ay']))
+    config.region = (config.region && (config.region.toLowerCase() in ['az', 'eu', 'ay', 'us']))
       ? config.region
       : 'eu';
     this.uri = 'https://px1.tuyaeu.com/homeassistant'.replace('eu', config.region);
@@ -215,7 +214,7 @@ class CloudTuya {
       console.error(tokens.errorMsg);
       return null;
     }
-    
+
     return tokens;
   }
 
