@@ -70,3 +70,4 @@ typings/
 .next
 key.json
 njstuya.js
+package-lock.json
