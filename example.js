@@ -22,7 +22,7 @@ try{
   deviceData = require('./devices.json');
 } catch(err) {
   console.warn('devices.json is missing. creating temporary');
-  deviceData = [{}];
+  deviceData = [{id:'10000000000', name:'temp'}];
 }
 /**
 * Save Data Such a Devices to file
@@ -51,8 +51,8 @@ async function main() {
     region: apiKeys.region,
   });
 
-  // Test device read from devics.json saved at the end.
-  var testId = deviceData[0].id || '10000000000';
+  // Test device read from devices.json saved at the end.
+  var testId = deviceData[0].id;
   debug(`device data ${deviceData} and ${deviceData[0].id} id or all ${deviceData[0].name}`);
 
   // Connect to cloud api and get access token.
