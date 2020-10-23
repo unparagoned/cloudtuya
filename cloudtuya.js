@@ -114,7 +114,12 @@ class CloudTuya {
 
   // Converts true/false to ON/OFF
   static smap(itemState) {
-    return(itemState && 'ON') || 'OFF';
+
+    let logicalState = itemState;
+    if(typeof itemState === typeof 'string') {
+      logicalState = itemState === 'true';
+    }
+    return (logicalState ? 'ON' : 'OFF');
   }
 
   // Convert text on/off, logic and numbers into 1/0 values
