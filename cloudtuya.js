@@ -168,7 +168,7 @@ class CloudTuya {
     const uri = `${this.uri}/skill`;
     payload.accessToken = this.accessToken;
     payload.devId = config.devId;
-    payload.value = (options.setState == 1 || options.setState == "on") ? 0 : 1;
+    payload.value = (options.setState == 1 || options.setState == "on") ? 1 : 0;
     // dsp 1 default
     // payload.value = CloudTuya.lmap(config.setState);
     const command = config.command || 'turnOnOff';
