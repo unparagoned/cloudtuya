@@ -228,6 +228,11 @@ class CloudTuya {
   async getToken(options) {
     return this.login(options);
   }
+
+  async setToken(tokens) {
+    this.tokens = tokens;
+    this.accessToken = tokens.access_token;
+  }
 }
 
 module.exports = CloudTuya;
