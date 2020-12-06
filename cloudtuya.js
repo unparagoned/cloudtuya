@@ -169,7 +169,8 @@ class CloudTuya {
     payload.accessToken = this.accessToken;
     payload.devId = config.devId;
     // dsp 1 default
-    // payload.value = CloudTuya.lmap(config.setState);
+    // For legacy support
+    if(Object.keys(config).includes('setState')) payload.value = CloudTuya.lmap(config.setState);
     const command = config.command || 'turnOnOff';
     debug(payload);
     const data = {
