@@ -5,7 +5,6 @@ This Node.js API allows you to control your Tuya / Smart Life Devices by just pa
 
 A good reference of the capibilities is the [tuyaha project](https://github.com/PaulAnnekov/tuyaha), which actually is a library, written in python.
 
-
 ## Get Started
 
 - Install [Node.js](http://nodejs.org/)
