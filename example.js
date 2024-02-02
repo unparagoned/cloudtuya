@@ -49,8 +49,6 @@ const api = new CloudTuya({
   region: apiKeys.region,
 });
 
-
-
 async function findDevices() {
   // Get all devices registered on the Tuya app
   let devices = await api.find();
@@ -88,10 +86,7 @@ async function lightControl(deviceId) {
 
 }
 
-
 async function main() {
-
-
   // Test device read from devices.json saved at the end.
 
   debug(`device data ${JSON.stringify(deviceData)}`);
