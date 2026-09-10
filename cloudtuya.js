@@ -1,4 +1,3 @@
-const request = require('request');
 const debug = require('debug')('cloudtuya');
 // A module that uses the tuya cloud api, to get and set device states
 // All you need is to put your tuya/smartlife email and pass
@@ -61,15 +60,25 @@ class CloudTuya {
     // Set to empty object if undefined
     if(this.tokens && this.tokens.expires_in < 0) this.getToken();
     const config = (options) || {};
-    config.method = 'POST';
-    return new Promise((resolve, reject) => {
-      request(config, (err, response, body) => {
-        if(!err && response.statusCode === 200) {
-          debug(body);
-          resolve(body);
-        } else if(err) reject(err);
-      });
+    // `json` callers expect a parsed object back, `form` callers expect raw text.
+    const isJson = Object.prototype.hasOwnProperty.call(config, 'json');
+    const body = isJson
+      ? JSON.stringify(config.json)
+      : new URLSearchParams(config.form).toString();
+
+    const response = await fetch(config.uri, {
+      method: 'POST',
+      headers: config.headers,
+      body,
     });
+
+    if(response.status !== 200) {
+      throw new Error(`Tuya cloud request failed with status ${response.status}`);
+    }
+
+    const text = await response.text();
+    debug(text);
+    return isJson ? JSON.parse(text) : text;
   }
 
   /**
